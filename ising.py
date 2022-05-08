@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class Ising2D(object):
-    def __init__(self, N, mu = 0.33, J = 0.2, B = 1.0):
+    def __init__(self, N, mu = 0.33, J = 0.2, B = 1.0) -> None:
         self.N = N
         self.T = 0.0
         self.step = 0
@@ -16,7 +16,7 @@ class Ising2D(object):
         self.specific_heat = 0.0
         self.susceptibility = 0.0
     
-    def _metropolis_hastings(self, temperature):
+    def _metropolis_hastings(self, temperature) -> None:
         for _ in range(self.N**2):
             x = np.random.randint(0,self.N)
             y = np.random.randint(0,self.N)
@@ -32,14 +32,14 @@ class Ising2D(object):
 
             self.system[x,y] = site
 
-    def plot_system(self):
+    def plot_system(self) -> None:
         plt.figure()
         plt.imshow(self.system, interpolation='nearest')
         plt.title(f"Time={self.step}, Temperature={self.T}K")
         plt.savefig(f"plots/time_{self.step}.png")
         plt.show()
 
-    def _calculate_energy(self):
+    def _calculate_energy(self) -> float:
         energy = 0.0
         for i in range(self.N):
             for j in range(self.N):
@@ -49,14 +49,14 @@ class Ising2D(object):
 
         return energy / 4
 
-    def _calculate_magnetization(self):
+    def _calculate_magnetization(self) -> np.ndarray:
         return np.sum(self.system)
 
-    def _equilibrate_system(self, num_steps, temperature):
+    def _equilibrate_system(self, num_steps, temperature) -> None:
         for _ in range(num_steps):
             self._metropolis_hastings(temperature=temperature)
 
-    def simulate(self, num_steps, temperature, plot = False):
+    def simulate(self, num_steps, temperature, plot = False) -> None:
         self._equilibrate_system(num_steps= int(0.2 * num_steps), temperature=temperature)
         E = M = E_squared = M_squared = 0.0
         self.T = temperature
